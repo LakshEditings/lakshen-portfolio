@@ -1,3 +1,4 @@
+// src/Components/About.jsx
 import React from 'react';
 
 const About = () => {
@@ -26,17 +27,31 @@ const About = () => {
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
               <h3 className="text-2xl font-bold mb-4 text-cyan-400">Education</h3>
               <p className="text-gray-300 mb-2"><strong>B.E. Mechatronics</strong></p>
-              <p className="text-gray-400">Bannari Amman Institute of Technology</p>
-              <p className="text-gray-400 mt-2">Class 12: 80.2% | Class 10: 87.6%</p>
+              <p className="text-gray-400">Bannari Amman Institute of Technology, Sathyamangalam</p>
+              <p className="text-gray-400 mt-2">Class 12: 80.2% (Modern Senior Secondary School, Nanganallur) | Class 10: 87.6%</p>
+              <p className="text-gray-400">Sports House Captain (Class 5-7, Sairam Vidyala, Madipakkam)</p>
             </div>
 
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
               <h3 className="text-2xl font-bold mb-4 text-cyan-400">Beyond Tech</h3>
               <div className="space-y-2 text-gray-300">
-                <p>🥋 Karate Black Dan 1</p>
-                <p>🧘 Advanced Yoga Certificate</p>
-                <p>🎯 Silambam 1 Star</p>
+                <p>🥋 Karate Black Dan 1 (7th Class)</p>
+                <p>🧘 Advanced Yoga Certificate (6th Class)</p>
+                <p>🎯 Silambam 1 Star (7th Class)</p>
                 <p>🏆 Sports House Captain (Class 5,6,7)</p>
+              </div>
+            </div>
+
+            {/* New: Online Courses from p4 */}
+            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
+              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Online Courses</h3>
+              <p className="text-gray-300 mb-4">Web Development Certificate Course – SkillForge</p>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {/* Replace with Imgur URLs for p4 cert images */}
+                <img src="https://i.imgur.com/placeholder-cert1.jpg" alt="Git & GitHub Course" className="rounded-lg shadow-lg" />
+                <img src="https://i.imgur.com/placeholder-cert2.jpg" alt="Python for Beginners" className="rounded-lg shadow-lg" />
+                <img src="https://i.imgur.com/placeholder-cert3.jpg" alt="Web Dev Completion" className="rounded-lg shadow-lg" />
+                <img src="https://i.imgur.com/placeholder-cert4.jpg" alt="SkillForge Internship" className="rounded-lg shadow-lg" />
               </div>
             </div>
           </div>
@@ -57,6 +72,8 @@ const About = () => {
                     </div>
                   </div>
                 ))}
+                {/* Updated from p2: Web Dev detail */}
+                <p className="text-xs text-gray-500 mt-2">Launched 3 static websites and an E-Commerce site</p>
               </div>
             </div>
 

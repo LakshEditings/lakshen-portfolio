@@ -1,91 +1,162 @@
-// src/Components/About.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Award, Loader2, X, ExternalLink } from 'lucide-react';
+import { getAchievements } from '../services/googleSheets';
 
-const About = () => {
-  const skills = [
-    { category: 'Programming', items: ['C', 'C++', 'Java', 'Python'] },
-    { category: 'Web Dev', items: ['React JS', 'HTML', 'CSS', 'JavaScript'] },
-    { category: 'Block Programming', items: ['Scratch', 'MIT App Inventor'] },
-    { category: 'Hardware', items: ['Arduino', 'ESP', 'IoT', 'PLC'] },
-    { category: 'Other', items: ['ROS2', 'MERN Stack', 'YOLO Algorithm'] }
-  ];
+const Achievements = () => {
+  const [achievements, setAchievements] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const fetchAchievements = async () => {
+      try {
+        setLoading(true);
+        const data = await getAchievements();
+        setAchievements(data);
+        setError(null);
+      } catch (err) {
+        console.error('Error loading achievements:', err);
+        setError('Failed to load achievements. Please try again later.');
+        setAchievements([]); // Empty - no fallback to see real data
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAchievements();
+  }, []);
+
+  const handleAchievementClick = (achievement) => {
+    if (achievement.linkedinpost && achievement.linkedinpost.trim() !== '') {
+      setSelectedPost(achievement.linkedinpost);
+      setShowPopup(true);
+
+      // Auto redirect after 5 seconds
+      setTimeout(() => {
+        window.open(achievement.linkedinpost, '_blank');
+        setShowPopup(false);
+        setSelectedPost(null);
+      }, 5000);
+    }
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
+    setSelectedPost(null);
+  };
+
+  if (loading) {
+    return (
+      <section id="achievements" className="py-20 px-6 bg-white/5">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center">
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Achievements</span>
+          </h2>
+          <div className="flex justify-center items-center py-20">
+            <Loader2 className="w-12 h-12 text-cyan-400 animate-spin" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section id="about" className="py-20 px-6">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center">
-          <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">About Me</span>
-        </h2>
-        
-        <div className="grid md:grid-cols-2 gap-12">
-          <div className="space-y-6">
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Leadership</h3>
-              <p className="text-gray-300">Chairman of IEEE BIT Student Branch, leading innovation and technical excellence</p>
+    <>
+      <section id="achievements" className="py-20 px-6 bg-white/5">
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center">
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Achievements</span>
+          </h2>
+          
+          {error && (
+            <div className="mb-8 p-4 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-center">
+              {error}
             </div>
-            
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Education</h3>
-              <p className="text-gray-300 mb-2"><strong>B.E. Mechatronics</strong></p>
-              <p className="text-gray-400">Bannari Amman Institute of Technology, Sathyamangalam</p>
-              <p className="text-gray-400 mt-2">Class 12: 80.2% (Modern Senior Secondary School, Nanganallur) | Class 10: 87.6%</p>
-              <p className="text-gray-400">Sports House Captain (Class 5-7, Sairam Vidyala, Madipakkam)</p>
-            </div>
+          )}
 
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Beyond Tech</h3>
-              <div className="space-y-2 text-gray-300">
-                <p>🥋 Karate Black Dan 1 (7th Class)</p>
-                <p>🧘 Advanced Yoga Certificate (6th Class)</p>
-                <p>🎯 Silambam 1 Star (7th Class)</p>
-                <p>🏆 Sports House Captain (Class 5,6,7)</p>
-              </div>
-            </div>
-
-            {/* New: Online Courses from p4 */}
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Online Courses</h3>
-              <p className="text-gray-300 mb-4">Web Development Certificate Course – SkillForge</p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {/* Replace with Imgur URLs for p4 cert images */}
-                <img src="https://i.imgur.com/placeholder-cert1.jpg" alt="Git & GitHub Course" className="rounded-lg shadow-lg" />
-                <img src="https://i.imgur.com/placeholder-cert2.jpg" alt="Python for Beginners" className="rounded-lg shadow-lg" />
-                <img src="https://i.imgur.com/placeholder-cert3.jpg" alt="Web Dev Completion" className="rounded-lg shadow-lg" />
-                <img src="https://i.imgur.com/placeholder-cert4.jpg" alt="SkillForge Internship" className="rounded-lg shadow-lg" />
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 mb-6">
-              <h3 className="text-2xl font-bold mb-6 text-cyan-400">Skills</h3>
-              <div className="space-y-4">
-                {skills.map((skill, idx) => (
-                  <div key={idx}>
-                    <p className="text-sm text-gray-400 mb-2">{skill.category}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {skill.items.map((item, i) => (
-                        <span key={i} className="px-3 py-1 bg-cyan-500/10 border border-cyan-500/30 rounded-full text-cyan-400 text-sm">
-                          {item}
-                        </span>
-                      ))}
-                    </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {achievements.map((achievement, idx) => (
+              <div 
+                key={idx} 
+                onClick={() => handleAchievementClick(achievement)}
+                className={`bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:border-cyan-500/50 transition-all hover:shadow-lg hover:shadow-cyan-500/10 hover:-translate-y-1 ${
+                  achievement.linkedinpost ? 'cursor-pointer' : ''
+                }`}
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className="p-2 bg-cyan-500/10 rounded-lg">
+                    <Award className="w-5 h-5 text-cyan-400" />
                   </div>
-                ))}
-                {/* Updated from p2: Web Dev detail */}
-                <p className="text-xs text-gray-500 mt-2">Launched 3 static websites and an E-Commerce site</p>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                      achievement.type === 'International' 
+                        ? 'bg-purple-500/10 text-purple-400 border border-purple-500/30' :
+                      achievement.type === 'Winner' 
+                        ? 'bg-green-500/10 text-green-400 border border-green-500/30' :
+                      achievement.type === 'Finalist' 
+                        ? 'bg-blue-500/10 text-blue-400 border border-blue-500/30' :
+                        'bg-yellow-500/10 text-yellow-400 border border-yellow-500/30'
+                    }`}>
+                      {achievement.type}
+                    </span>
+                    {achievement.linkedinpost && (
+                      <ExternalLink className="w-4 h-4 text-cyan-400" />
+                    )}
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold text-white mb-2">{achievement.title}</h3>
+                {achievement.subtitle && <p className="text-sm text-gray-400 mb-2">{achievement.subtitle}</p>}
+                <p className="text-cyan-400 font-semibold">{achievement.award}</p>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-              <h3 className="text-2xl font-bold mb-4 text-cyan-400">Interests</h3>
-              <p className="text-gray-300">Design Thinking, Travelling, Problem Solving, Innovating, Sports, Programming, Music, Sudoku</p>
+      {/* LinkedIn Embed Popup */}
+      {showPopup && selectedPost && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="relative w-full max-w-2xl mx-4">
+            <button
+              onClick={closePopup}
+              className="absolute -top-12 right-0 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-all"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
+            
+            <div className="bg-white rounded-2xl overflow-hidden shadow-2xl">
+              <div className="p-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-center">
+                <p className="text-sm">Redirecting to LinkedIn in 5 seconds...</p>
+              </div>
+              <div className="aspect-video bg-gray-100 flex items-center justify-center">
+                <iframe
+                  src={`${selectedPost}?embed=true`}
+                  className="w-full h-full"
+                  frameBorder="0"
+                  allowFullScreen
+                  title="LinkedIn Post"
+                />
+              </div>
+              <div className="p-4 bg-gray-50 text-center">
+                <a
+                  href={selectedPost}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-all"
+                  onClick={closePopup}
+                >
+                  <span>Open in LinkedIn</span>
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      )}
+    </>
   );
 };
 
-export default About;
+export default Achievements;
