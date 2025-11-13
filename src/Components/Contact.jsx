@@ -1,5 +1,6 @@
+// src/Components/Contact.jsx
 import React from 'react';
-import { Mail, Phone, MapPin, Linkedin, Github, Instagram, Twitter, Code } from 'lucide-react';
+import { Mail, Phone, MapPin, Linkedin, Github, Instagram, Twitter, Code, Download, Brain } from 'lucide-react'; // Added Brain for LeetCode
 
 const Contact = () => {
   return (
@@ -42,7 +43,7 @@ const Contact = () => {
             </div>
             <div>
               <p className="text-gray-400 text-sm mb-1">Address</p>
-              <p className="text-white">C2 Aragav Nivas, Vijayalakshmi Nagar</p>
+              <p className="text-white">C2A Ragav Nivas, Vijayalakshmi Nagar</p>
               <p className="text-white">3rd Main Road, Nanmangalam</p>
               <p className="text-white">Chennai - 117, Tamil Nadu, India</p>
             </div>
@@ -51,7 +52,7 @@ const Contact = () => {
 
         <div className="text-center">
           <p className="text-gray-400 mb-6">Connect with me on social media</p>
-          <div className="flex justify-center space-x-4">
+          <div className="flex justify-center space-x-4 mb-6">
             <a href="https://www.linkedin.com/in/v-lakshen-b1103a213/" target="_blank" rel="noopener noreferrer" className="p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/50 rounded-full transition-all hover:scale-110">
               <Linkedin className="w-6 h-6" />
             </a>
@@ -67,7 +68,17 @@ const Contact = () => {
             <a href="https://www.hackerrank.com/profile/lakshen6" target="_blank" rel="noopener noreferrer" className="p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/50 rounded-full transition-all hover:scale-110">
               <Code className="w-6 h-6" />
             </a>
+            {/* New from p5 */}
+            <a href="https://leetcode.com/u/KMB4FVP1YU/" target="_blank" rel="noopener noreferrer" className="p-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/50 rounded-full transition-all hover:scale-110">
+              <Brain className="w-6 h-6" />
+            </a>
           </div>
+          {/* New: Resume Download from p5 */}
+          <a href="Lakshen-Brief-Resume-30.10.25.pdf" download className="inline-flex items-center space-x-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-full transition-all">
+            <Download className="w-4 h-4" />
+            <span>Download Resume</span>
+          </a>
+          <p className="text-gray-400 mt-4 text-sm">Hobbies: Sports, Programming, Music, Sudoku | Interests: Design Thinking, Travelling, Problem Solving, Innovating, Sports</p>
         </div>
       </div>
     </section>
