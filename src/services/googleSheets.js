@@ -110,8 +110,9 @@ export const getProjects = async () => {
     return [];
   }
 };
-
-export default {
+const googleSheets = {
   getAchievements,
   getProjects
 };
+
+export default googleSheets;
