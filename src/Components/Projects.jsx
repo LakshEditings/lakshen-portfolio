@@ -77,6 +77,22 @@ const Projects = () => {
     }
   };
 
+  // Helper to check if image is a Google Drive video
+  const isGoogleDriveVideo = (url) => {
+    return url && url.includes('drive.google.com') && (url.includes('video') || url.includes('.mp4') || url.includes('?usp=sharing'));
+  };
+
+  // Helper to get embed URL for Google Drive video
+  const getDriveEmbedUrl = (url) => {
+    // Extract file ID from Drive URL
+    const fileIdMatch = url.match(/\/file\/d\/([a-zA-Z0-9-_]+)/) || url.match(/id=([a-zA-Z0-9-_]+)/);
+    if (fileIdMatch) {
+      const fileId = fileIdMatch[1];
+      return `https://drive.google.com/file/d/${fileId}/preview`;
+    }
+    return url; // Fallback to original
+  };
+
   if (loading) {
     return (
       <section id="projects" className="py-20 px-6">
@@ -156,7 +172,7 @@ const Projects = () => {
         </div>
       </section>
 
-      {/* Image Popup with Video Link */}
+      {/* Image/Video Popup */}
       {showPopup && selectedProject && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm"
@@ -184,11 +200,26 @@ const Projects = () => {
                 onClick={handleImageClick}
                 style={{ cursor: selectedProject.link ? 'pointer' : 'default' }}
               >
-                <img
-                  src={selectedProject.image}
-                  alt={selectedProject.title}
-                  className="w-full h-auto max-h-[70vh] object-contain bg-black/50"
-                />
+                {isGoogleDriveVideo(selectedProject.image) ? (
+                  <iframe
+                    src={getDriveEmbedUrl(selectedProject.image)}
+                    className="w-full h-auto max-h-[70vh] object-contain bg-black/50"
+                    frameBorder="0"
+                    allowFullScreen
+                    title={selectedProject.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    loop
+                    autoPlay
+                    onClick={handleImageClick}
+                  />
+                ) : (
+                  <img
+                    src={selectedProject.image}
+                    alt={selectedProject.title}
+                    className="w-full h-auto max-h-[70vh] object-contain bg-black/50"
+                    onClick={handleImageClick}
+                  />
+                )}
                 
                 {/* Custom Cursor Text - "To Video" */}
                 {selectedProject.link && isHovering && (
@@ -203,18 +234,6 @@ const Projects = () => {
                     <div className="flex items-center space-x-2 px-4 py-2 bg-cyan-500 rounded-full shadow-lg">
                       <Play className="w-4 h-4 text-white" fill="white" />
                       <span className="text-white font-semibold text-sm whitespace-nowrap">To Video</span>
-                    </div>
-                  </div>
-                )}
-
-                {/* Overlay hint */}
-                {selectedProject.link && (
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all flex items-center justify-center">
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                      <div className="px-6 py-3 bg-cyan-500/90 rounded-full flex items-center space-x-2">
-                        <Play className="w-5 h-5 text-white" fill="white" />
-                        <span className="text-white font-semibold">Click to Watch Video</span>
-                      </div>
                     </div>
                   </div>
                 )}
