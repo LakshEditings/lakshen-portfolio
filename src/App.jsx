@@ -1,4 +1,4 @@
-// src/App.jsx - UPDATED to match your existing pattern
+// src/App.jsx - Updated for Scroll-Based Navigation with Active Section Highlighting
 import React, { useState, useEffect } from 'react';
 import Navbar from './Components/Navbar';
 import Hero from './Components/Hero';
@@ -15,25 +15,34 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // Handle scroll effect for navbar
+  // Handle scroll for navbar background and active section highlighting
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
+      
+      const sections = ['home', 'about', 'experience', 'projects', 'achievements', 'contact'];
+      const current = sections.find(section => {
+        const element = document.getElementById(section);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          return rect.top <= 100 && rect.bottom >= 100;
+        }
+        return false;
+      });
+      if (current) setActiveSection(current);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle section navigation
-  const handleSectionChange = (section) => {
-    setActiveSection(section);
-    setIsMenuOpen(false);
-    
-    const element = document.getElementById(section);
+  // Handle section navigation (smooth scroll)
+  const handleSectionChange = (id) => {
+    const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
+    setIsMenuOpen(false);
   };
 
   return (
